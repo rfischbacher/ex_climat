@@ -8,4 +8,4 @@ https://opendata.swiss/fr/dataset/klimamessnetz-tageswerte
 Le fichier csv contient les données pour plusieurs stations suisse et couvre la période de 1950 à 2019.
 Pour chaque année, on y trouve notamment la température moyenne mesurée chaque jour à 2 mètres au dessus du sol.
 
-Les données sont visualisée sur un graphique, avec l'axe x représentant chaque jour de l'année (01 pour le 1er janvier et 365 pour le 31 décembre). L'axe y représente la température.
+Les données sont visualisée sur un graphique, avec l'axe x représentant chaque jour de l'année (001 pour le 1er janvier et 365 pour le 31 décembre). L'axe y représente la température moyenne mesurée par la station pour une journée donnée. Les données de chaque jour sont reliées entre elles pour visualiser les variation de température au cours d'une année.
