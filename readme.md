@@ -1,8 +1,8 @@
-# Visualisation de la température journalière à Genève 
+# Visualisation de la température journalière à Genève au cours du temps
 
 Il s'agit d'un projet consacré à la réalisation d'une visualisation en utilisant d3.js.
 J'ai choisi de travailler sur la température moyenne journalière de l'air à Genève pour visualiser son évolution au cours des années.
-Les données proviennent de MétéoSuisse. Elles sont téléchargeable sur le lien suivant:
+Les données proviennent de MétéoSuisse. Elles sont téléchargeable sur le lien opendata.swiss suivant:
 https://opendata.swiss/fr/dataset/klimamessnetz-tageswerte
 
 Le fichier csv contient les données pour plusieurs stations suisse et couvre la période de 1950 à 2019.
