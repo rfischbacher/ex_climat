@@ -3,14 +3,15 @@ const width = 600;
 const height = 300;
 const margin = { top: 20, right: 0, bottom: 20, left: 20 };
 
-d3.dsv(';', 'data/NBCN-m.csv', function (d) {
+// Lecture du fichier csv et création de clés pour chaque colonne de données
+d3.dsv(';', 'data/GVE_1950_2019.csv', function (d) {
     return{
         station: d.stn,
         year: d.time.substr(0, 4),
         month: d.time.substr(4, 2),
         temp_moy: parseFloat(d.tre200m0)
     }
-}).then(function(data) {    
+}).then(function(data) {    // la promise
 
 const station = data.filter(d => d.station === 'NEU' && d.year === '2019');
 
