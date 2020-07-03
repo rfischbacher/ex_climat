@@ -7,13 +7,16 @@ const margin = { top: 20, right: 0, bottom: 20, left: 20 };
 d3.dsv(';', 'data/GVE_1950_2019.csv', function (d) {
     return{
         station: d.stn,
-        year: d.time.substr(0, 4),
-        month: d.time.substr(4, 2),
-        temp_moy: parseFloat(d.tre200m0)
+        year: parseFloat(d.time.substr(0, 4)),
+        month: parseFloat(d.time.substr(4, 2)),
+        day: parseFloat(d.time.substr(6, 2)),
+        temp_moy: parseFloat(d.tre200d0)
     }
-}).then(function(data) {    // la promise
+}).then(function(data) {   // la promise
 
-const station = data.filter(d => d.station === 'NEU' && d.year === '2019');
+  // filtrage de la station et de l'année
+const station = data.filter(d => d.station === 'GVE' && d.year === 2019);
+// console.log(data); // voir les données
 
   // Créer l'élément SVG et le configurer
   const svg = d3.select('.main')
