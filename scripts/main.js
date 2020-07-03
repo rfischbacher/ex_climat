@@ -17,7 +17,7 @@ d3.dsv(';', 'data/GVE_1950_2019.csv', function (d) {
 // Filtrer notre station de Genève pour une année donnée
 const station = data.filter(d => d.year === 2019);
 
-// console.log(data); // voir les données séléctionnées
+//console.log(station); // voir les données séléctionnées
 
   // Créer l'élément SVG et le configurer
   const svg = d3.select('.main')
@@ -30,8 +30,6 @@ const station = data.filter(d => d.year === 2019);
   const x = d3.scaleTime()
               .domain(station.map(d => d.day))
               .range([margin.left, width - margin.right])
-              .padding(0.1)
-              .round(true)
   
   // Axe y pour la température (valeur en degré)
   const y = d3.scaleLinear()
@@ -46,10 +44,22 @@ const station = data.filter(d => d.year === 2019);
   .attr("stroke", "steelblue")
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
-    .x(day)
-    .y(temp)
+    .x(d => d.day)
+    .y(d => d.temp)
     )
-              
+  
+  // Faire les axes
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(x);
+
+  svg.append("g")
+    .attr("class", "axis")
+    .call(y);
+
+  const yaxis = d3.axisLeft().scale(x); 
+  const xaxis = d3.axisBottom().scale(y);
   
   
 }) // fin de la fonction
