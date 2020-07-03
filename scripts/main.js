@@ -1,7 +1,7 @@
-// Dimensions du SVG
-const width = 600;
-const height = 300;
-const margin = { top: 20, right: 0, bottom: 20, left: 20 };
+// Dimensions et marges du graphique SVG
+const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+const width = 1000 - margin.left - margin.right;
+const height = 1000 - margin.top - margin.bottom;
 
 // Lecture du fichier csv et création de clés-valeurs pour chaque colonne de données
 d3.dsv(';', 'data/GVE_1950_2019.csv', function (d) {
@@ -22,41 +22,41 @@ const station = data.filter(d => d.year === 2019);
   // Créer l'élément SVG et le configurer
   const svg = d3.select('.main')
                 .append('svg')
-                .attr('width', width)
-                .attr('height', height)
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
                 .attr('style', 'font: 10px sans-serif')
   
   // Axe x pour le temps (numéro du jour dans l'année)
   const x = d3.scaleTime()
-              .domain(station.map(d => d.day))
-              .range([margin.left, width - margin.right])
+              .domain([0, d3.max(station, function(d) { return d.day; })])
+              .range([0, width])
   
   // Axe y pour la température (valeur en degré)
   const y = d3.scaleLinear()
-              .domain([0, d3.max(station, d => d.temp)])
-              .range([height - margin.bottom - 5, margin.top])
-              .interpolate(d3.interpolateRound)
+              .domain([0, d3.max(station, function(d) { return d.temp; })])
+              .range([height, 0])
   
-  // Relier les valeures de température
+  // definir une ligne
+  var ligne = d3.line()
+                .x(function(d) { return d.day; })
+                .y(function(d) { return d.temp; })
+                .curve(d3.curveMonotoneX);            
+  
+  // Relier les valeures de température par une ligne
   svg.append("path")
-  .datum(data)
-  .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 1.5)
-  .attr("d", d3.line()
-    .x(d => d.day)
-    .y(d => d.temp)
-    )
+      .datum(station)
+      .attr("class", "line")
+      .attr("d", ligne)
   
   // Faire les axes
   svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(x);
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
 
   svg.append("g")
-    .attr("class", "axis")
-    .call(y);
+      .attr("class", "y axis")
+      .call(d3.axisLeft(y));
 
   const yaxis = d3.axisLeft().scale(x); 
   const xaxis = d3.axisBottom().scale(y);
