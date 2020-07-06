@@ -45,21 +45,28 @@ d3.csv('data/GVE_2010_2019.csv', function (d){
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
+            svg.append("g")
+                .attr("class", "axis")    
+                .call(d3.axisTop(x));
   
     // Axe y pour la température mesurée (valeur en degré Celsius)
     const y = d3.scaleLinear()
-                //.domain([-10,30])
                 .domain([d3.min(data, function(d) { return Math.min(d.Temp_2012,d.Temp_2019); }), d3.max(data, function(d) { return Math.max(d.Temp_2012,d.Temp_2019); })])
                 .range([ height, 0 ]);
             svg.append("g")
                 .attr("class", "axis")
                 .call(d3.axisLeft(y));
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate( " + width + ",0)")
+                .call(d3.axisRight(y));
   
     // Création d'une courbe lissée pour 2012
     var valueline2012= d3.line()
         .x(function(d) { return x(d.Jour); })
         .y(function(d) { return y(d.Temp_2012); })
-        .curve(d3.curveBasis);      
+        .curve(d3.curveBasis);   
+
     // Création d'une courbe lissée pour 2019
     var valueline2019 = d3.line()
         .x(function(d) { return x(d.Jour); })
@@ -73,6 +80,7 @@ d3.csv('data/GVE_2010_2019.csv', function (d){
         .attr("stroke", "#0000FF")
         .attr("stroke-width", 3)
         .attr("d", valueline2012); 
+
     // Relier les données pour 2019
     svg.append("path")
         .datum(data)
@@ -101,6 +109,42 @@ d3.csv('data/GVE_2010_2019.csv', function (d){
         .text("Température [°C]");  
     
     // Légende des courbes    
+    svg.append("text")
+        .attr("x", width-155)
+        .attr("y", margin.top+40)
+        .attr("class", "legend")
+        .style("fill", "#FE2E2E")
+        .text("Année 2019")  
+    svg.append("text")
+        .attr("x", width-155)
+        .attr("y", margin.top+60)
+        .attr("class", "legend")
+        .style("fill", "#0000FF")
+        .text("Année 2012");  
 
+    // Création d'un grid en x et en y
+    function grid_x() {		
+        return d3.axisBottom(x)
+                .ticks(6)
+    }
+    function grid_y() {		
+        return d3.axisLeft(y)
+                .ticks(6)
+    }
+
+    // Ajout du grid sur le graphique
+    svg.append("g")			
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(grid_x()
+        .tickSize(-height)
+        .tickFormat("")
+        );
+    svg.append("g")			
+        .attr("class", "grid")
+        .call(grid_y()
+        .tickSize(-width)
+        .tickFormat("")
+        );
     
 }) // FIN DE LA FONCTION
